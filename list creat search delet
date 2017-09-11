@@ -1,0 +1,162 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<malloc.h>
+
+struct node /*jiedian de shujujiegou*/
+{
+   int num;
+   char str[20];
+   struct node *next;
+};
+
+int main()
+{
+   struct node *creat();/*hanshu shengming*/
+   struct node *insert();/*hanshu shengming*/
+   struct node *delet();/*hanshu shengming*/
+   void print();/*hanshu shengming*/
+   struct node *head;/*dingyi touzhizhen*/
+   char str[20];
+   int n;
+   head=NULL;/*jianli yige kongbiao*/
+   head=creat(head);/*tiaoyong hanshu jianli yi head weitou de lianbiao*/
+   print(head);/*shuchu jiedian*/
+   
+   printf("\n input inserted num, name:\n");
+   gets(str);/*shuru xuehao*/
+   n=atoi(str);
+   gets(str);/*shuru xingming*/
+   head=insert(head, str, n);/*jiedian charu lianbiao*/
+   print(head);
+  
+   printf("\n input deleted name: \n");
+   gets(str); /*shuru beishan xingming*/
+   head=delet(head,str);/*shanchu jiedian*/
+   print(head); 
+   return 0;
+}
+
+struct node *creat(struct node *head)/*chuangjian lianbiao*/
+{
+   char temp[30];
+   struct node *p1, *p2;
+   p1=p2=(struct node *)malloc(sizeof(struct node));
+   printf("input num, name: \n");
+   printf("exit: double times Enter!\n");
+   gets(temp);
+   gets(p1->str);
+   p1->num=atoi(temp);
+   p1->next=NULL;
+   while(strlen(p1->str)>0)
+   {
+       if(head==NULL)//if the chain is null
+           head=p1;
+       else
+           p2->next=p1;// feikongbiao jieru biaowei
+       p2=p1;
+       p1=(struct node *)malloc(sizeof(struct node));//shenqing xin jiedian
+       /*xiamian shuru jiedianzhi*/
+       printf("input num, name: \n");
+       printf("exit: double times Enter!\n");      
+       gets(temp);
+       gets(p1->str);
+       p1->num=atoi(temp);
+       p1->next=NULL;
+   }
+   return head;
+}
+
+/* charu jiedian*/
+struct node *insert(head, pstr, n)/*charu xuehaowei n xingmingwei pstr dejiedian*/
+struct node *head;/*lianbiao touzhizhen*/
+char *pstr;
+int n;
+{
+   struct node *p1, *p2, *p3;
+   p1=(struct node*)malloc(sizeof(struct node));/*fenpei xinjiedian*/
+   strcpy(p1->str,pstr); /*xieru jiedian xingming*/
+   p1->num = n;/*xuehao*/
+   p2=head;
+   if(head==NULL)
+   {
+      head=p1;
+      p1->next=NULL;//xinjiedian charu biaotou
+   }
+   else//fei kongbiao
+   {
+      while(n>p2->num&&p2->next!=NULL)/*shuruxuehao dayu jiedianxuehao qie weidao biaowei*/
+      {
+         p3=p2;
+         p2=p2->next;//genzong lianbiao zengchang
+      }
+      if(n<=p2->num)
+      if(head==p2)
+      {
+         head=p1;
+         p1->next=p2;
+      }
+      else
+      {
+         p3->next=p1;
+         p1->next=p2;
+      }
+      else
+      { 
+         p2->next=p1;
+         p1->next=NULL;
+       }
+}
+      return(head);
+}
+
+/* shanchu shuju*/
+struct node *delet(head,pstr)
+struct node *head;
+char *pstr;
+{
+    struct node *temp,*p;
+    temp=head;
+    if(head==NULL)
+       printf("\nListis null!\n");
+    else
+    {
+       temp=head;
+       while(strcmp(temp->str,pstr)!=0&&temp->next!=NULL)
+       {
+           p=temp;
+           temp=temp->next;
+        }
+        if(strcmp(temp->str,pstr)==0)
+        {
+           if(temp==head)
+           {
+             printf("delete string :%s\n",temp->str);
+             head=head->next;
+             free(temp);
+           }
+           else
+           {
+              p->next =temp->next;
+              printf("delete string :%s\n",temp->str);
+              free(temp);
+            }
+         }
+         else
+            printf("\nno find sring!\n");
+       }
+       return (head);
+}  
+/* lianbiao shuchu*/
+void print(struct node *head)
+{
+     struct node *temp;
+     temp = head;
+     printf("\n output strings:\n");
+     while(temp!=NULL)
+     { 
+          printf("\n%d------%s\n",temp->num,temp->str);
+          temp=temp->next;
+     } 
+     return;
+}
